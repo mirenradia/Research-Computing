@@ -1,6 +1,6 @@
 # Linux Terminal
 
-The linux terminal is primarily useful for managing the running of your code, either locally or on remote computing resources.  In this lesson we will cover how to submit and manage jobs from the command line and how to control our computing enviroment.
+The Linux terminal is primarily useful for managing the running of your code, either locally or on remote computing resources.  In this lesson we will cover how to submit and manage jobs from the command line and how to control our computing enviroment.
 
 ## Mangaging processes
 
@@ -114,7 +114,7 @@ get remotefile copytonewlocalname
 
 Personally I don't like `vim` or `emacs` as I can't remember the dozens of commands you need to make them work and I find coping the files back and forth is too annoying so I use a `ssh` client like Cyberduck for mac, WinSCP for windows or on Linux you can use Dolphin or Nautilus.  These make the remote directory look like a local one and you can open files with your favorite editor (which makes a local copy), edit them, then save (which should copy the file back, at least for Cyberduck) which makes working on remote code easy.
 
-However, I should note that it's not always possible to connect like that, for example if you need to ssh a few times to get to your code. For those situations, one still needs to know at least the very basics of `vim` which is a default text editor on most linux machines. To launch it, you need to type `vim FILENAME`. This will allow you to view the file. To edit it, you need to enter the edit mode by typing `i` (from "insert"). After editing, press the escape key. To close the file, you need to type `:q` to exit if you didn't edit anything, `:q!` if you edited and want to discard the changes or `:wq` if you want to save them.
+However, I should note that it's not always possible to connect like that, for example if you need to ssh a few times to get to your code. For those situations, one still needs to know at least the very basics of `vim` which is a default text editor on most Linux machines. To launch it, you need to type `vim FILENAME`. This will allow you to view the file. To edit it, you need to enter the edit mode by typing `i` (from "insert"). After editing, press the escape key. To close the file, you need to type `:q` to exit if you didn't edit anything, `:q!` if you edited and want to discard the changes or `:wq` if you want to save them.
 
 
 ## Scripting

@@ -16,7 +16,7 @@ Here is a guide to the course contents:
 ## Contents
 
 ### Linux Terminal
-- What is linux?
+- What is Linux?
 - Basic commands for navigating 
 - Redirection
 - Managing processes
