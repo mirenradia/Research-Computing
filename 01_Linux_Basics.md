@@ -1,6 +1,6 @@
 # Linux Terminal
 
-In this section we are going to learn the basics of using the Linux/Unix Shell.  We need to learn how to use this <b>C</b>ommand <b>L</b>ine <b>I</b>nterface (CLI) as it is the fastest and simplest way to manage our enviroment and processes needed for our analysis piplines.  Many **G**raphical **U**ser **I**nterfaces (GUI) will claim to handle these tasks for you but they are generally slower to use than the CLI and the CLI allows far greater automation of complex tasks via scripts.  Finally you will need to master this if you plan to use any supercomputers as they all run Linux and the CLI is often the only way to access the system.  This guide is fairly brief but will give you enough to get up and running.
+In this section we are going to learn the basics of using the Linux/Unix Shell.  We need to learn how to use this <b>C</b>ommand <b>L</b>ine <b>I</b>nterface (CLI) as it is the fastest and simplest way to manage our environment and processes needed for our analysis piplines.  Many **G**raphical **U**ser **I**nterfaces (GUI) will claim to handle these tasks for you but they are generally slower to use than the CLI and the CLI allows far greater automation of complex tasks via scripts.  Finally you will need to master this if you plan to use any supercomputers as they all run Linux and the CLI is often the only way to access the system.  This guide is fairly brief but will give you enough to get up and running.
 
 ## What is the Linux Terminal?
 
@@ -72,7 +72,7 @@ Here `*` is a wildcard in that it can match any sequence of characters (includin
 
 - `?` which matches one character so `ma?` would match "mat", "map" and "man" but not "mast".  
 
-- `[]` matches any of the contents so `m[uao]m` matches "mum", "mam", "mom".  You can also use dash to indicate a range. So `[0-9]` matches any numeral and `[a-z]` matches any letter.  `!` negates the match so `[!9]` will match all but "9" and `^` will negate all in range so `[^1-4]` will match all but "1,2,3,4". There are also some standard (`POSIX`) sets you can use: [[:lower:]], [[:upper:]], [[:alpha:]], [[:diget:]], [[:alnum:]], [[:punct:]], and [[:space:]] which match: lowercase letters, uppercase letters, upper or lowercase letters, numeric digits, alpha-numeric characters, punctuation characters, and white space characters respectively. 
+- `[]` matches any of the contents so `m[uao]m` matches "mum", "mam", "mom".  You can also use dash to indicate a range. So `[0-9]` matches any numeral and `[a-z]` matches any letter.  `!` negates the match so `[!9]` will match all but "9" and `^` will negate all in range so `[^1-4]` will match all but "1,2,3,4". There are also some standard (`POSIX`) sets you can use: [[:lower:]], [[:upper:]], [[:alpha:]], [[:digit:]], [[:alnum:]], [[:punct:]], and [[:space:]] which match: lowercase letters, uppercase letters, upper or lowercase letters, numeric digits, alpha-numeric characters, punctuation characters, and white space characters respectively. 
 
 - `{}` is a list of things, comma separated without spaces. 
 
@@ -350,7 +350,7 @@ $ wc -l < dog.txt   produces:       1
 so second removed the default printing of the filename from `wc` (which does a **w**ord **c**ount).  There are also situations where piping the input to commands simpler. 
 
 
-The next key action we can do is to redirect the outputof one command to another.  This is called **pipeing** and is done with `|` for example.
+The next key action we can do is to redirect the output of one command to another.  This is called **pipeing** and is done with `|` for example.
 
 ```bash
 $ ls -l | grep Jan > January_Files.txt
@@ -370,7 +370,7 @@ You can chain together as may command as you want:
 cat file.txt | sort | uniq | head -n 3 > first_three.txt
 ```
 
-Which uses `cat` to load the contents of the text file into memory then `sort`s it alphabeticaly, removed duplicates with `uniq`, and selects the first three lines to output to a file.
+Which uses `cat` to load the contents of the text file into memory then `sort`s it alphabetically, removed duplicates with `uniq`, and selects the first three lines to output to a file.
 
 ________________
 
