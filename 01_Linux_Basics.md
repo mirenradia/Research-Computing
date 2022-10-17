@@ -16,30 +16,30 @@ Now let's begin.
 
 When you open a terminal window you will get a window with a command prompt and you will usually be in your home directory.  The first thing we need to do is find out where we are so we use `pwd` (<b>p</b>rint <b>w</b>orking **d**irectory):
 
-```
+```bash
 $ pwd
 ```
 
 This tells us where we are.  Next we need to move to the folder where we want to work but first we need to know where we could go with `ls` (<b>l</b>i<b>s</b>t) which tells us what is in the directory we are in:
 
-```
+```bash
 $ ls
 ```
 
 We can add options to this command to get more information or to alter the behaviour.  All BASH commands have them and they are added with the "-" prefix.  For example we could add "-a" (**a**ll) to show hidden files (ones begining with a `.`, typically these are hidden for a reason as you shouldn't mess with them.  We will see some examples as we go through the course):
 
-```
+```bash
 $ ls -a
 ```
 
 To get a list of all possible options for a command you just need add `man` before it to consult the **man**ual pages
 
-```
+```bash
 $ man ls
 ```
 The manual is exited by typing "q".  The options (bit after the dash) can be combined together and input in any order.  For example to get the list in long format, by time, in reverse order, including hidden:
 
-```
+```bash
 $ ls -ltra
 ```
 
@@ -56,13 +56,13 @@ Permissions can be changed with `chmod` which works on the binary number so `chm
 
 The same but only for files called `hello.py`:
 
-```
+```bash
 $ ls -ltra hello.py
 ```
 
 or all files ending in `.py`:
 
-```
+```bash
 $ ls -ltra *.py
 ```
 ---
@@ -80,7 +80,7 @@ Here `*` is a wildcard in that it can match any sequence of characters (includin
 
 You can combine any and all of these together, eg:
 
-```
+```bash
 $ ls m?m?s*_[!0][0-9][0-9].py
 ```
 
@@ -90,31 +90,31 @@ Now let's learn some more commands
 
 To navigate which directory we are in we use `cd` (<b>c</b>hange <b>d</b>irectory) command:
 
-```
+```bash
 $ cd some_directory
 ```
 
 To get back one level:
 
-```
+```bash
 $ cd ..
 ```
 
 Or many levels:
 
-```
+```bash
 $ cd ../../../../..
 ```
 
 Or return to the home directory:
 
-```
+```bash
 $ cd
 ```
 
 We can also do this with 
 
-```
+```bash
 $ cd ~
 ```
 
@@ -122,19 +122,19 @@ as `~` is a shortcut to the `HOME` shell variable.  It is useful as it can be us
 
 To get to get to the `ROOT` directory we use
 
-```
+```bash
 $ cd /
 ```
 
 and to go the the directory we were in last we use
 
-```
+```bash
 $ cd -
 ```
 
 All commands allow tab completion for file/directory names so `cd m<\tab>` would match all directories with `m*` and *complete as much as is unique* which is pretty helpful.  When changing directory to something like "My Documents" we need to treat the space as literal otherwise it thinks you've asked to change into two directories which doesn't make sense.  For this we can either use:
 
-```
+```bash
 $ cd "My Documents"
 $ cd My\ Documents
 ```
@@ -143,19 +143,19 @@ For this reason you should not create any directories of filenames with spaces i
 
 Next we might want to create or destroy files.  To create a file you can use any command that alters a file as generally they will create the file if it does not exist.  `touch` is a common one to use for this as all it does normally is update the files timestamp. 
 
-```
+```bash
 $ touch christmas_list.txt
 ```
 
 will create a blank file called `christmas_list.txt`. Interestingly, it also lets you edit the access and modification time stamps to be whatever you want, which is helpful if you need to prove you were busy coding when the diamonds went missing.  The syntax is:
 
-```
+```bash
 $ touch -d 1999-12-25T01:32:24 christmas_list.txt
 ```
 
 Deleting files is more specific.  Here we use `rm` (<b>r</b>e<b>m</b>ove), for directories use `mkdir` and `rmdir`:
 
-```
+```bash
 $ mkdir tmp
 $ cd tmp
 $ touch testfile.txt
@@ -168,7 +168,7 @@ These all accept wild cards so `rm *.out` removes all files ending in `.out`.  `
 
 We can make copies of files with `cp` (<b>c</b>o<b>p</b>y) where the syntax is `cp file_from file_to`:
 
-```
+```bash
 $ touch a.txt
 $ cp a.txt b.txt
 $ ls -ltr *.txt
@@ -176,7 +176,7 @@ $ ls -ltr *.txt
 
 or just move them with `mv` (<b>m</b>o<b>v</b>e):
 
-```
+```bash
 $ mv b.txt c.txt
 $ ls -ltr *.txt
 ```
@@ -189,7 +189,7 @@ $ ls -ltr *.txt
 
 So to change all our `*.txt` files to `*_old.txt`:
 
-```
+```bash
 $ rename .txt _old.txt *.txt
 $ ls -ltr *.txt
 ```
@@ -198,7 +198,7 @@ $ ls -ltr *.txt
 
 Finally when we need to find things we can use `find` to locate files in a directory tree.  The syntax is `find` 'where to look' 'options of which `-name` is always wanted' 'filename with optional wildcards':
 
-```
+```bash
 $ find . -name "*.txt"
 ```
 
@@ -213,7 +213,7 @@ There is additional complexity for users on Mac or Windows where the behaviour c
 
 To simply read a file, to see what is in it, we can use `cat`, `more` or `less`:
 
-```
+```bash
 $ cat d.txt
 $ more d.txt
 $ less d.txt
@@ -223,7 +223,7 @@ $ less d.txt
 
 If the files are large and we only want to find some particular section we can use `grep` (**g**lobal search for a **r**egular **e**xpression and **p**rint) to find text in a file, eg: 
 
-```
+```bash
 $ grep hello file.txt
 ```
 
@@ -246,7 +246,7 @@ The difference is that the first set of wildcards are for **Globbing** which mat
 
 Here also meet the importance of quotes. Suppose we have a file called `greeting.txt` which contains the text `hello`. For the following commands we would see:
 
-```
+```bash
 $ grep hello greeting.txt     ->  hello
 $ grep hello *.txt            ->  hello
 $ grep hello "*.txt"          ->  grep: *.txt: No such file or directory 
@@ -255,7 +255,7 @@ $ grep hello '*.txt'          ->  grep: *.txt: No such file or directory
 
 grep has several useful options `-A, -B, -C` (note capitalisation) followed by `num` will return num lines before, after, before and after, the match respectively.  This can be very useful for finding uses of functions in your code. `-n` will also print the line numbers.  For example:
 
-```
+```bash
 $ grep -n -C 3 'func1' "*.py"
 ```
 
@@ -263,7 +263,7 @@ will give you all the uses of `func1` in you python files in the current directo
 
 Grep can also search for multiple things at once using `|` which here means "or", eg:
 
-```
+```bash
 $ grep -n -C 3 'func1|func2' "*.py"
 ```
 
@@ -289,25 +289,25 @@ STDIN   -->  | COMMAND |  --> STDOUT
 
 Firstly we can redirect `STDOUT` from one command to a file or the contents of a file to a command using `>` and `<` 
 
-```
+```bash
 $ ls -l > output.txt
 ```
 
 Will list our directory, and write it to a file called `output.txt`, which it will create it if it does not exist (so `> somefile.txt` works the same as `touch somefile.txt`).  We can also append to the end of an existing file using `>>`.
 
-```
+```bash
 $ grep 'func' code.py >> output
 ```
 
 `>` redirects only `STDOUT` to the file and passes `STDERR` to be displayed in the terminal.  To capture the errors we need to use `2>` (as `2` means `STDERR`), eg:
 
-```
+```bash
 $ ls test.txt 2> errors.txt
 ```
 
 If we want to capture both `STDOUT` and `STDERR` we can either `&>` or combine the ouput:
 
-```
+```bash
 $ ls *.txt &> output.txt
 $ ls *.txt >output.txt 2>&1
 ```
@@ -336,13 +336,13 @@ Where we have use numbers in brackets to differentiate the identical `/dev/tty` 
 
 We can also do the reverse and pass the contents of the file to `STDIN` using `<`
 
-```
+```bash
 $ grep hello < some_file.txt
 ```
 
 which will search for `hello` in the file `some_file.txt` (you can do this without the `<` and it will still work fine).  Why would you do this as it seems unessecary?  There is a subtle difference between the two which is that `<` anonomises the input.  This means that if we compare the two methods:
 
-```
+```bash
 $ wc -l dog.txt     produces:       1 dog.txt
 $ wc -l < dog.txt   produces:       1
 ```
@@ -352,13 +352,13 @@ so second removed the default printing of the filename from `wc` (which does a *
 
 The next key action we can do is to redirect the outputof one command to another.  This is called **pipeing** and is done with `|` for example.
 
-```
+```bash
 $ ls -l | grep Jan > January_Files.txt
 ```
 
 Will list all files in our directory in long format, then use grep to select all those which were last edited in January, then put the output in a file called January_Files.txt.  This is super useful (particularly with grep to search output) and can be used to do a wide range of things.
 
-```
+```bash
 $ history|grep "grep"       (find all grep commands you have used)
 $ head -n 100 file.txt | tail -n 20 > lines_81_to_100.txt
 $ ls -la | more  (allows us to look at the output of `ls` one page at a time)
@@ -366,7 +366,7 @@ $ ls -la | more  (allows us to look at the output of `ls` one page at a time)
 
 You can chain together as may command as you want:
 
-```
+```bash
 cat file.txt | sort | uniq | head -n 3 > first_three.txt
 ```
 
@@ -382,7 +382,7 @@ ________________
 5. Go into the directory `pycamb` then write a single line command that finds all `.py` files and count how any lines contain `if`
 6. Guess the meaning of the following:
 
-```
+```bash
 ls i_do_not_exist *.txt 2> /dev/null | grep [de]
 ls i_do_not_exist *.txt 2>&1 | grep [de]
 ls i_do_not_exist *.txt 2>&1 1>/dev/null | grep [de]

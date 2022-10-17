@@ -17,7 +17,7 @@ Firstly we have `cut` which allows you to extract specific columns from text fil
 ```
 
 Then we would have the following
-```
+```bash
 $ cut -f 1,3 data.txt   (columns 1 and 3)
 12:34	1:3
 08:12	2:4
@@ -33,7 +33,7 @@ $ cut -d ':' -f 2 data.txt    (change the delimiter to ":" and select the second
 12	dog	2
 59	fish	5
 
-cut -b 2,4,7,10 data.txt  (or -c, as bytes and characters are the same unless the encoding has multibyte characters)
+$ cut -b 2,4,7,10 data.txt  (or -c, as bytes and characters are the same unless the encoding has multibyte characters)
 23c	
 81d	
 35fh
@@ -43,7 +43,7 @@ Note: you can't reverse the order of columns, `cut -f 3,1 data.txt` produced the
 
 This links to similar commands `paste` and `join` which combine files.  First, `paste` combines files as columns. So if we have the two files `numbers.txt` and `letters.txt`, which just list the first 5 numbers or letters respectivley, the paste would merge them:
 
-```
+```bash
 $ paste numbers.txt letters.txt
 1	a
 2	b
@@ -61,7 +61,7 @@ $ paste -d ':' numbers.txt letters.txt
 
 This can be used to reverse columns using cut:
 
-```
+```bash
 $ paste <(cut -f 3 data.txt) <(cut -f 1 data.txt)
 1:3	12:34
 2:4	08:12
@@ -82,7 +82,7 @@ file1.txt   file2.txt   file3.txt   file4.txt
 
 then we could join them as follows:
 
-```
+```bash
 $ join file1.txt file2.txt
 1 cat green
 2 dog blue
@@ -105,7 +105,7 @@ $ join -1 2 -2 3 -o '1.1 2.2 1.2 2.1' file1.txt file4.txt
 
 The first is a simple join on the first column, the second shows that it can cope with repeated entries in one file.  The third shows how to use `-1` and `-2` to specify the column in each file to use for the match and how to use the `-o` option to specify the order columns to use in the output.  The third has an additional issue which is that `join` assumes that files are sorted before joining. As the "cat" and "dog" records are swapped, the "cat" record is lost in the join.  To fix this we can do:
 
-```
+```bash
 $ join -1 2 -2 3 -o '1.1 2.2 1.2 2.1' <(sort -k 2 file1.txt) <(sort -k 3 file4.txt) | sort -k 1
 1 12 cat meat
 2 24 dog meat
@@ -117,7 +117,7 @@ $ join -1 2 -2 3 -o '1.1 2.2 1.2 2.1' <(sort -k 2 file1.txt) <(sort -k 3 file4.t
 where we are sorting the input to `join` on the fly, then sorting the output from `join` to get the original ordering by number
 Note that when working with tabulated date we can display it nicely using the `column` command which can be useful for viewing data with odd delimiters, e.g:
 
-```
+```bash
 $ column -t -s ':' data.txt
 12  34	cat	1   3	apple
 08  12	dog	2   4	pear    
@@ -126,7 +126,7 @@ $ column -t -s ':' data.txt
 ## File Editing
 We can automate the editing of the contents of files using some specific commands. The simplist is `tr` which just **tr**anslates characters (or more accuratly transliterates).  It works on charaters, swapping matched ones with suggested replacements.  It understands all the standard character sets (`POSIX`) which allows for some useful options. Here are some examples:
 
-```
+```bash
 $ tr 'a' 'b' <filename.txt                  (replaces any 'a' characters with 'b')
 $ tr “[a-z]” “[A-Z]” <filename.txt          (lower to upper case)
 $ tr “[:lower:]” “[:upper:]” <filename.txt  (same using POSIX)
@@ -138,13 +138,13 @@ Note:  there are two special characters which are difficult to type so they have
 
 You can use `-s` to '**s**queezes' multiple of the same charaters into a single one *after* substitution. So the following converts multiple spaces into single ones by replacing spaces with spaces *then* the `-s` option squeezes them down.
 
-```
+```bash
 $ tr -s ' ' ' ' <filename.txt
 ```
 
 You can also use it to **d**elete characters with `-d` and **c**omplement (as in match all but) the selection with `-c`
 
-```
+```bash
 $ tr -d "[:digit:]" < filename.txt      (removes all digits)
 $ tr -cd "[:digit:]" < filename.txt     (removes everything that is not a digit)
 ```
@@ -155,7 +155,7 @@ Now we more onto the big beasts of file editing `sed` and `awk`.  These are more
 First lets look at `sed` which is a **s**tream **ed**itor.  This processes files line by line, and performs actions on each one.  This may sound limited but the scope of what if can do is large (people have written programmes that solve sudoku's using only sed).  We will look at some of the most common uses soon, but before then we will need to describe how it works and introduce you to the functions availble to it.
 
 Sed has 4 "spaces" that it uses to process files.  They are the **input** space, the **pattern** space, the **hold** space, and the **output** space.  The basic usage looks like this:
-```
+```bash
 $ sed [options] 'commands' <[filename] 
 ```
 When sed is run the default behaviour is this:
@@ -183,7 +183,7 @@ If we did `sed 'd' <quote.txt` we would get nothing as each line is loaded then 
 These are not so useful so far.  However, we can modify commands by supplying a pattern in slashes. Then the command is only run when there is a match.  For example `sed -n '/write/p' <quote.txt` will act as `grep` only returning the lines with the pattern "write" in it.  The pattern is a `REGEX` so all wildcards mentioned for grep work here.  the command `sed -n '/w.*e/p' <quote.txt ` will match both "twice ... place" and "write .... possible" and print both lines ***as REGEX are greedy so match the largest extent possible***.  Matches can be inverted using `!`, eg `sed -n '/write/!p' <quote.txt` prints all lines which don't match (which is the same as `sed '/write/d' <quote.txt`).
 
 Now onto some more useful commands.  First is `s` which **s**ubstitutes patterns.  The format is: `s/REGEX/replacement/flags`.  The simplest example is word replacement, eg:
-```
+```bash
 $ sed 's/code/story/' < quote.txt
 Debugging is twice as hard as writing the story in the first place. 
 Therefore, if you write the story as cleverly as possible, 
@@ -191,7 +191,7 @@ you are, by definition, not smart enough to debug it.
 ```
 
 It defaults to only substituting the first match in each line, use the flags `g` to make it **g**lobal to match all or `N` to match the first **N** matches on each line, this makes `sed s/find/replace/g` a global find and replace.  You can use the matched string in the replacement using the special charater `&`
-```
+```bash
 $ sed 's/w.*e/**&**/' < quote.txt
 Debugging is t**wice as hard as writing the code in the first place**. 
 Therefore, if you **write the code as cleverly as possible**, 
@@ -200,7 +200,7 @@ you are, by definition, not smart enough to debug it.
 which proves the earlier point about matching being greedy.  
 
 Note: to not be greedy in this case we need to be a little tricky:
-```
+```bash
 $ sed 's/w[^e]*e/**&**/' < quote.txt 
 Debugging is t**wice** as hard as writing the code in the first place. 
 Therefore, if you **write** the code as cleverly as possible, 
@@ -208,7 +208,7 @@ you are, by definition, not smart enough to debug it.
 ```
 
 Let's step through the `REGEX` together: begins with `w` which matches "w", then [^e] matches anything that is not an "e", the following `*` means any number of "not e"s then the final `e` means we end on a "e".  We can get sophisticated by using brackets and allowing **E**xtended `REGEX` using `-E` 
-```
+```bash
 $ sed -E 's/(w)[^e]*(e)/\1***\2/' < quote.txt 
 Debugging is tw***e as hard as writing the code in the first place. 
 Therefore, if you w***e the code as cleverly as possible, 
@@ -217,7 +217,7 @@ you are, by definition, not smart enough to debug it.
 Now we match the `w` (with the brackets assigning this to `\1`), any number of not "e"s with `[^e]*`, then the final `e` (with the brackets assigning this to `\2`).  We can then replace the middle with "***" using `\1***\2`.
 
 The next command is `y` (which doesn't seem to stand for anything).  This is like `s` but for characters (making it like `tr`).  It will replace all instances of a charater with another character, you can specify multiple and it will pair them up in order:
-```
+```bash
 $ sed -E 'y/abc/123/' < quote.txt
 De2ugging is twi3e 1s h1rd 1s writing the 3ode in the first pl13e. 
 Therefore, if you write the 3ode 1s 3leverly 1s possi2le, 
@@ -241,7 +241,7 @@ Now let's consider some more advanced commands in for sed which manage the **hol
 One key point to note is that the hold space starts with ***one newline character in it***.  You need to keep this in mind as it can lead to some possibly unexpected behaviour. For instance `sed 'G' <quote.txt` will insert blank lines in between each line as it: reads in a line, appends hold (which is a new line), commands end so prints pattern space and reads next line.
 
 On their own these do not seem very useful but the addition of a hold space allows us to do much more sophisticated things.  Using the hold space we can reverse the order of a file with
-```
+```bash
 $ sed '1!G;h;$!d' <quote.txt
 ```
 This will:
@@ -260,7 +260,7 @@ This will:
 - end of commands, print pattern to output
 
 However the hold space is mostly useful for things like printing the line preceding a matched one.  This is normally tricky as the line has already been processed and you can't go back.  Here we can remember the previous line with:
-```
+```bash
 $ sed -n '/error/{x;p;x;};h' <output.txt
 ```
 where the `{}` are there to let `sed` know that the commands `x;p;x;` (last ; is only required on mac systems for some reason) are all attached to the `REGEX` "error".  Here every line goes in hold until a match when it is swapped to pattern, printed and then swapped back.
@@ -271,7 +271,7 @@ Now we have the some less used commands:
 - `w file` write pattern space to "file"
 
 `=` can be done more easily with other commands and the new line character is annoying.  If you use it you get:
-```
+```bash
 $ sed '=' <quote.txt
 1
 Debugging is twice as hard as writing the code in the first place. 
@@ -281,7 +281,7 @@ Therefore, if you write the code as cleverly as possible,
 you are, by definition, not smart enough to debug it.
 ```
 which you then have to fix with another `sed`:
-```
+```bash
 $ sed '=' <quote.txt | sed 'N;s/\n/ /'
 1 Debugging is twice as hard as writing the code in the first place. 
 2 Therefore, if you write the code as cleverly as possible, 
@@ -295,7 +295,7 @@ Finally there are the commands ***only for experts***. They work like the old `G
 - `#` this line is a comment, as in ignored
 
 This make sed a full programming language but they are not for the faint hearted.  Here is the simplest example I could find:
-```
+```bash
 $ sed '/a/{s/a/*/
 > : loop
 > n
@@ -314,7 +314,7 @@ b loop
 }
 ```
 and run it with the `f` option
-```
+```bash
 sed -f command_file.sed < quote.txt
 ```
 
@@ -335,7 +335,7 @@ While `tr` deals with charaters, and `sed` deals with lines, `awk` deals with **
 
 The basic operation `awk` performs is to read a line of a file, parse it into fields using a given delimiter, perform actions on the line, move to the next line.  The default syntax is very similar to `sed`
 
-```
+```bash
 $ awk [options] 'commands' [filenames] 
 ```
 
@@ -343,7 +343,7 @@ Like `sed` the commands are enclosed in single quotes and take the same form of 
 
 Suppose we have "file4.txt" from earlier:
 
-```
+```bash
 $ cat file4.txt
 meat	24	dog
 meat	12	cat
@@ -354,7 +354,7 @@ rubbish	76	fox
 
 Then we can use `awk` to select just the last column
 
-```
+```bash
 $ awk '{print $3}' file4.txt
 dog
 cat
@@ -363,7 +363,7 @@ bat
 fox
 ```
 here we have no `/pattern/` so we match every line and we `print` the third column `$3`.  The standard field deliminator is "white space" so spaces or tabs.  This can be changed using the `-F` option, i.e. `$awk -F ":" ...` changes it to ":".  You can specify anything and can have multiple using either "a|b" or "[ab]" which will use either "a" or "b" as the delimiter.   We can use awk to easily reorder the columns as we like
-```
+```bash
 $ awk '{print $3,$1,$2}' file4.txt
 dog meat 24
 cat meat 12
@@ -372,14 +372,14 @@ bat berries 2
 fox rubbish 76
 ```
 We can add a pattern to match,
-```
+```bash
 $ awk '/a/{print $0}' file4.txt
 meat	24	dog
 meat	12	cat
 berries	2	bat
 ```
 which prints all lines containing "a" ($0 means the whole line).  We can change the format of our output by switching `print` for `printf` which takes format specifiers:
-```
+```bash
 $ awk '{printf("The number is %d\n",$2)}' file4.txt
 The number is 24
 The number is 12
@@ -395,7 +395,7 @@ Here the command `printf` outputs the string in double quotes substituting the f
 - %e **e**xponent notation
 
 Here is an example:
-```
+```bash
 $ awk '{printf("%%d=%d\t%%f=%.3f\t%%e=%.3e\n",$2,$2,$2)}' file4.txt
 %d=24	%f=24.000	%e=2.400e+01
 %d=12	%f=12.000	%e=1.200e+01
@@ -406,7 +406,7 @@ $ awk '{printf("%%d=%d\t%%f=%.3f\t%%e=%.3e\n",$2,$2,$2)}' file4.txt
 Parsing this: `%%d=` gives "%d=" as the `%` escapes the following one, `%d` matches the first argument, `$2`, and prints it in decimal notation, `\t` prints a `tab`, `%%f=` prints "%f=", `%.3f` matches the second `$2` and prints the number in floating point notation with 3 decimal places, `\t%%e=` prints another `tab` followed by "%e=", `%.3e` matches the third `$2` and prints the number in enginerring notation with three decimal places and finally `\n` prints a newline character.  This command is identical to that in `C` so should be familiar to anyone you has used that language.  This command is very useful for reformatting output files into more useful forms (like that needed for a latex table to put in a paper).
 
 While we are on the subject of numbers we have access to many common mathematical functions in `awk` like `atan2`, `cos`, `exp`, `log`, `sin`, and `sqrt` and operators: `+` `-` `*` `/` `%` `^` (where the last two are "modulo" and "power") so we can do:
-```
+```bash
 $ awk '{printf("mod 6:%d, cube:%d, sqrt:%f\n",$2%6,$2^3,sqrt($2))}' file4.txt
 mod 6:0, cube:13824, sqrt:4.898979
 mod 6:0, cube:1728, sqrt:3.464102
@@ -415,7 +415,7 @@ mod 6:2, cube:8, sqrt:1.414214
 mod 6:4, cube:438976, sqrt:8.717798
 ```
 We can also compute averages
-```
+```bash
 $ awk '{ sum += $2 } END { if (NR > 0) print sum / NR }' file4.txt
 40.6
 ```
@@ -427,13 +427,13 @@ Here we have introduced several new concepts. We have created a **variable** `su
 - **implicit variables** are just variables defined as standard in `awk`.  They cover most things you would be interested in and can be found in `man awk` with sensible descriptions.  Common ones are `NR` for number of the current record that is read (`FNR` is the version for each file), `NF` is the number of fields, `FS` and `RS` are **f**ield and **r**ecord **s**eperators respectively (`OFS` and `ORS` are the versions for output which I seldom use as I prefer `printf` to specify things exactly), `RSTART` and `RLENGTH` are the start position and length of matched strings (as returned by the function `match`)
 
 Here is is helpful just to see of examples of them in action:
-```
+```bash
 $ awk '{print $2+previous; previous=$2}'    (rolling sum of last two values)
 $ awk '{print $(NF-1)}'             (print the second to last field)
 $ awk '{if($2>50) print $0}'        (print lines where 'field 2' is larger than 50)
 ```
 Where in the first line we have specified two commands using the `;` between them.  Alternatively you can just have `{}` for each and the commands will be executed sequentially. You can create more complicated commands like:
-```
+```bash
 $ awk 'BEGIN { printf("\\begin{table}[ht]\n\\centering\n\\begin{tabular}{c c c}\n\\hline\\hline\n")} {printf("%s & %d & %s \\\\ \n",$1,$2,$3)} END{printf("\\hline\n\\end{tabular}\n\\caption{contents of %s}\n\\label{table:%s}\n\\end{table}\n",FILENAME,FILENAME)}' file4.txt
 
 \begin{table}[ht]
@@ -454,7 +454,7 @@ rubbish & 76 & fox \\
 which produces your file content in a form that can be copied directly into latex as a table.  For longer commands like this you are better to save the commands in files and input them to awk using the `-f` option just like we did with sed.  `awk` is a full scripting language with `if`,`while`,`for`,`do` constructs and a large number of internal functions so you can really code up almost anything you want to.
 
 `awk` even supports ***associative arrays***, i.e. ones where the indicies are just labels (also called "dictionary" in python, or "map" in C++).  The following uses this to count how many animals eat each type of food in "file4.txt"
-```
+```bash
 $ awk '{food[$1] +=1} END {for (item in food) printf("Food \"%s\" is eaten by %d animals\n",item,food[item]) }' file4.txt
 Food "meat" is eaten by 2 animals
 Food "weed" is eaten by 1 animals
