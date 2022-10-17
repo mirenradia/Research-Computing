@@ -26,7 +26,7 @@ This tells us where we are.  Next we need to move to the folder where we want to
 $ ls
 ```
 
-We can add options to this command to get more information or to alter the behaviour.  All BASH commands have them and they are added with the "-" prefix.  For example we could add "-a" (**a**ll) to show hidden files (ones begining with a `.`, typically these are hidden for a reason as you shouldn't mess with them.  We will see some examples as we go through the course):
+We can add options to this command to get more information or to alter the behaviour.  All BASH commands have them and they are added with the "`-`" prefix.  For example we could add `-a` (**a**ll) to show hidden files (ones beginning with a `.`, typically these are hidden for a reason as you shouldn't need to mess with them too often.  We will see some examples as we go through the course):
 
 ```bash
 $ ls -a
@@ -46,11 +46,11 @@ $ ls -ltra
 ---
 **NOTE -- Permissions**
 
-This list leads us to an important aspect of Linux which you need to consider when working with bash which is permissions.  The permissions for each file is described by the first 10-characters in long format (`drwxrwxrwx` would mean <b>d</b>irectory <b>r</b>ead <b>w</b>rite e<b>x</b>ecute at `user`, then `group`, then `other` level.  If a letter is replaced by "-" then permission is denied for that set of users) which is followed by the owner, group, size, date last accessed, and filename.
+This list leads us to an important aspect of Linux which you need to consider when working with bash which is permissions.  The permissions for each file is described by the first 10-characters in long format (`drwxrwxrwx` would mean <b>d</b>irectory <b>r</b>ead <b>w</b>rite e<b>x</b>ecute at `user`, then `group`, then `other` level.  If a letter is replaced by `-` then the corresponding permission is denied for that set of users) which is followed by the owner, group, size, date last accessed, and filename.
 
-The permissions are important as they protect you work and workspace from other users on the system.  Typically you would have `rwx` for user so you can read and edit your files as well as execute them (which just means run them, or for directories/folders open them), `r--` for group so people in your group can see your code but not edit or run it (directories will need `r_x` otherwise they will not be able to open them, omitting `w` means that they can't create new files in your directories) and `---` or `r--` for other depending on taste.  You should avoid making either group or other have `w` as it means that they can edit you stuff (or replace your text with viruses) or in the case of directories, dump unlimited content into your folders.  When you create a file it will default to `-rw-r--r--` as this is safe.  However, if it is a BASH script you will need to change it to `-rwxr--r--` in order to run it.
+The permissions are important as they protect you work and workspace from other users on the system.  Typically you would have `rwx` for user so you can read and edit your files as well as execute them (which just means run them, or for directories/folders open them), `r--` for group so people in your group can see your code but not edit or run it (directories will need `r_x` otherwise they will not be able to open them, omitting `w` means that they can't create new files in your directories) and `---` or `r--` for other depending on taste.  You should avoid making either group or other have `w` as it means that they can edit you stuff (or replace your text with viruses) or in the case of directories, dump unlimited content into your folders.  When you create a file it will probably default to `-rw-r--r--` as this is safe.  However, if it is a BASH script you will need to change it to `-rwxr--r--` in order to run it.
 
-Permissions can be changed with `chmod` which works on the binary number so `chmod 644 filename` makes `filename` readable by anyone and writable by the owner only. This because `6` in binary is `110` which translates to `rw-` (`1` is on `0` off) for user, and 4 in binary is `100` which translates to `r--` for everyone else so 644 is `-rw-r--r--`.  It also works in symbolic mode where the same command would be `chmod u=rw,go=r filename` see `man chmod` for many other options. The `d` cannot be changed (it's either a directory or it's not and `chmod` can't do much about that).
+Permissions can be changed with `chmod`, which takes octal numbers as arguments, so `chmod 644 filename` makes `filename` readable by anyone and writeable by the owner only. This because `6` in octal is `110` in binary which translates to `rw-` (`1` is on `0` off) for user, and 4 in octal is `100` in binary which translates to `r--` for everyone else so 644 is `-rw-r--r--`.  It also works in symbolic mode where the same command would be `chmod u=rw,go=r filename` see `man chmod` for many other options. The `d` cannot be changed (it's either a directory or it's not and `chmod` can't do much about that).
 
 ---
 
@@ -68,13 +68,13 @@ $ ls -ltra *.py
 ---
 **NOTE -- Wildcards**
 
-Here `*` is a wildcard in that it can match any sequence of characters (including none at all).  By characters we mean any symbol at all, not just letters. There are wildcards you can use including:
+Here `*` is a wildcard in that it can match any sequence of characters (including none at all).  By characters we mean any symbol at all, not just letters. There are other wildcards you can use including:
 
 - `?` which matches one character so `ma?` would match "mat", "map" and "man" but not "mast".  
 
 - `[]` matches any of the contents so `m[uao]m` matches "mum", "mam", "mom".  You can also use dash to indicate a range. So `[0-9]` matches any numeral and `[a-z]` matches any letter.  `!` negates the match so `[!9]` will match all but "9" and `^` will negate all in range so `[^1-4]` will match all but "1,2,3,4". There are also some standard (`POSIX`) sets you can use: [[:lower:]], [[:upper:]], [[:alpha:]], [[:diget:]], [[:alnum:]], [[:punct:]], and [[:space:]] which match: lowercase letters, uppercase letters, upper or lowercase letters, numeric digits, alpha-numeric characters, punctuation characters, and white space characters respectively. 
 
-- {} is a list of things, comma separated without spaces. 
+- `{}` is a list of things, comma separated without spaces. 
 
 - `\` is used to make special symbols literal. So if you wanted to match `?` you would use `\?`
 
@@ -139,7 +139,7 @@ $ cd "My Documents"
 $ cd My\ Documents
 ```
 
-For this reason you should not create any directories of filenames with spaces in them when working on a Linux system.  
+For this reason you should avoid creating any directories or filenames with spaces in them when working on a Linux system.  
 
 Next we might want to create or destroy files.  To create a file you can use any command that alters a file as generally they will create the file if it does not exist.  `touch` is a common one to use for this as all it does normally is update the files timestamp. 
 
@@ -181,9 +181,9 @@ $ mv b.txt c.txt
 $ ls -ltr *.txt
 ```
 
-`mv` is for changing the file's directory or renaming files.  `mv` is much quicker than `cp` as `cp` actually duplicates all the data in a new location, `mv` only changes the name and path (diretory it is listed in.  As an aside, directories don't really exist on computers, they are just a tag to help people keep track of them and to aid display so `mv` never actually moves anything).  `mv` can move multiple files using wildcards in the first argument provided the second argment is a destination directory. It cannot rename multiple files via syntax like: `mv *.csv *.txt` which you may think can change the extension of all csv files.
+`mv` is for changing the file's directory or renaming files.  `mv` is much quicker than `cp` as `cp` actually duplicates all the data in a new location, `mv` only changes the name and path (directory it is listed in.  As an aside, directories don't really exist on physical file systems, they are just a tag to help people keep track of them and to aid display so `mv` never actually moves anything).  `mv` can move multiple files using wildcards in the first argument provided the second argument is a destination directory. It cannot rename multiple files via syntax like: `mv *.csv *.txt` which you may think can change the extension of all csv files.
 
- To rename multiple files there **sometimes** is the command `rename` (it's standard so won't be on all distributions, which is a shame as it's handy.  Check with `man rename`) which has the form (note that as it is non-standard this can also change depending on distributions!)
+ To rename multiple files there **sometimes** is the command `rename` (it's non-standard so won't be on all distributions, which is a shame as it's handy.  Check with `man rename`) which has the form (note that as it is non-standard this can also change depending on distributions!)
 
 `rename 'old string' 'new string' 'pattern to match files'`
 
@@ -203,11 +203,11 @@ $ find . -name "*.txt"
 ```
 
 ---
-NOTE - Wildcard expansion
-Here is a real "trap for young players".  If you just typed `find *.txt` you would think that the command worked perfectly but it isn't doing what you think.  When you use wildcards on the command line they are expanded **before** the command is run.  So in this case it expands `*.txt` to match all files in the current directory, then finds each of them in turn. The correct version above will search for any file that matches the `"*.txt"` in this folder *and all sub-directories*. The quotes indicate that we do not want the wildcards expanded but passed to the command as is.  However, there is a difference between single and double quotes with "" meaning we prefer for the wildcards not to be expanded and '' indicating that the must not be expanded at all.  The difference can be important.  
+**NOTE - Wildcard expansion**
 
+Here is a real "trap for young players".  If you just typed `find *.txt` you would think that the command worked perfectly but it isn't doing what you think.  When you use wildcards on the command line they are expanded **before** the command is run.  So in this case it expands `*.txt` to match all files in the current directory, then finds each of them in turn. The correct version above will search for any file that matches the `"*.txt"` in this folder *and all sub-directories*. The quotes indicate that we do not want the wildcards expanded but passed to the command as is.  However, there is a difference between single and double quotes with `""` meaning we prefer for the wildcards not to be expanded and `''` indicating that they must not be expanded at all.  The difference can be important.  
 
-There is additional complexity for users on Mac or Windows where the behaviour can be a little different as they are not strictly Linux systems. (On my mac the `-name` option protects what follows from being expanded so `find . -name *.txt` produces the correct behaviour even thought it shouldn't)
+There is additional complexity for users on macOS or Windows where the behaviour can be a little different as they are not strictly Linux systems. (On my mac the `-name` option protects what follows from being expanded so `find . -name *.txt` produces the correct behaviour even thought it shouldn't)
 
 ---
 
@@ -230,7 +230,7 @@ $ grep hello file.txt
 Will return the lines in `file.txt` which contain the text `hello` anywhere on them.  To use regular expressions you need to add the option -E, which just means <b>E</b>xtended which means it can use regex, **reg**ular **ex**pressions.  
 
 ---
-NOTE: Regular Expressions
+**NOTE: Regular Expressions**
 
 It is important to note that regular expression wildcards are **different** to the wildcards we met earlier!!! Now we have the following:
 - `.` matches a single character rather than `?`
@@ -340,7 +340,7 @@ We can also do the reverse and pass the contents of the file to `STDIN` using `<
 $ grep hello < some_file.txt
 ```
 
-which will search for `hello` in the file `some_file.txt` (you can do this without the `<` and it will still work fine).  Why would you do this as it seems unessecary?  There is a subtle difference between the two which is that `<` anonomises the input.  This means that if we compare the two methods:
+which will search for `hello` in the file `some_file.txt` (you can do this without the `<` and it will still work fine).  Why would you do this as it seems unnecessary?  There is a subtle difference between the two which is that `<` anonymises the input.  This means that if we compare the two methods:
 
 ```bash
 $ wc -l dog.txt     produces:       1 dog.txt
@@ -374,31 +374,29 @@ Which uses `cat` to load the contents of the text file into memory then `sort`s 
 
 ________________
 
-
-
-
 ### Exercise
 
 5. Go into the directory `pycamb` then write a single line command that finds all `.py` files and count how any lines contain `if`
 6. Guess the meaning of the following:
+   ```bash
+   ls i_do_not_exist *.txt 2> /dev/null | grep [de]
+   ls i_do_not_exist *.txt 2>&1 | grep [de]
+   ls i_do_not_exist *.txt 2>&1 1>/dev/null | grep [de]
+   ls i_do_not_exist *.txt 1>/dev/null 2>&1 | grep [de]
+   ```
+
+---
 
 ```bash
-ls i_do_not_exist *.txt 2> /dev/null | grep [de]
-ls i_do_not_exist *.txt 2>&1 | grep [de]
-ls i_do_not_exist *.txt 2>&1 1>/dev/null | grep [de]
-ls i_do_not_exist *.txt 1>/dev/null 2>&1 | grep [de]
-```
-
-
-
 find . -name "*.txt" -exec sh -c 'mv "$1" "${1%.txt}.csv"' _ {} \;
+```
 Command Breakdown:
 
-'.' => search path starting at current directory marked by ' . '
--name => set find match name (in this case all files that end with `.txt`)
--exec => execute the following command on every match
-sh -c => 'exec' creates an independent shell environment for each match
-mv "$1" "${1%.txt}.csv" => mv first variable (denoted by $1), which is the current file name, to new name. Here I do a substring match and delete; so take first var again, $1 and use % to delete `.txt` from the string. The `.csv` at the end just concatenates the remaining variable, which in the example below would now be testNumber, with `.csv`, creating the new testNumber.csv filename.
-The underscore is a placeholder for $0
-The {} is replaced by each (*.txt) filename found by the find command, and becomes $1 to the sh command.
-\; marks the end of the -exec command.  You can also use ';' or ";".
+* '`.`' => search path starting at current directory marked by ' . '
+* `-name` => set find match name (in this case all files that end with `.txt`)
+* `-exec` => execute the following command on every match
+* `sh -c` => 'exec' creates an independent shell environment for each match
+* `mv "$1" "${1%.txt}.csv"` => `mv` first variable (denoted by `$1`), which is the current file name, to new name. Here I do a substring match and delete; so take first var again, `$1` and use `%` to delete `.txt` from the string. The `.csv` at the end just concatenates the remaining variable, which in the example below would now be testNumber, with `.csv`, creating the new testNumber.csv filename.
+* The underscore is a placeholder for `$0`
+* The `{}` is replaced by each (`*.txt`) filename found by the find command, and becomes `$1` to the sh command.
+* `\;` marks the end of the `-exec` command.  You can also use `';'` or `";"`.
